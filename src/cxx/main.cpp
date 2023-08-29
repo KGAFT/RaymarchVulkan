@@ -24,11 +24,11 @@ int main(){
     swapChain = new VulkanSwapChain(device, 800, 600);
     raymarch = new RaymarchPipeline(device, swapChain, 800, 600);
     window->registerResizeCallback(raymarch);
-    int wait;
-    std::cin>>wait;
+   
     while(!window->needToClose()){
+        window->preRenderEvents();
         raymarch->render();
-        std::cin>>wait;
+       window->postRenderEvents();
     }
     delete raymarch;
     delete swapChain;

@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.0)
 project(Raymarch)
 
-set(VulkanSDKPath /usr/lib/vulkan_sdk/1.3.250.1/x86_64)
+set(VulkanSDKPath C:/VulkanSDK/1.3.261.0)
 
 set(CMAKE_CXX_STANDARD 17)
 
