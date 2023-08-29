@@ -18,11 +18,11 @@ void createInstance();
 void createDevice();
 
 int main(){
-    window = Window::createWindow(800, 600, "RayMarchExample", nullptr);
+    window = Window::createWindow(1600, 900, "RayMarchExample", nullptr);
     createInstance();
     createDevice();
-    swapChain = new VulkanSwapChain(device, 800, 600);
-    raymarch = new RaymarchPipeline(device, swapChain, 800, 600);
+    swapChain = new VulkanSwapChain(device, 1600, 900);
+    raymarch = new RaymarchPipeline(device, swapChain, 1600, 900);
     window->registerResizeCallback(raymarch);
    
     while(!window->needToClose()){
@@ -46,7 +46,7 @@ void createInstance(){
         extensions.push_back(exts[counter]);
     }
 
-    instance->createInstance("RayMarchExample", true, extensions);
+    instance->createInstance("RayMarchExample", false, extensions);
 }
 
 VkPhysicalDevice askUserForDevice(){
@@ -62,10 +62,10 @@ VkPhysicalDevice askUserForDevice(){
     }
     std::cout<<"Please enter selected device ID: ";
     std::cin>>count;
-    return suitDevs[count];
+    return suitDevs[0];
 }
 
 void createDevice(){
     VkPhysicalDevice dev = askUserForDevice();
-    device = new VulkanDevice(dev, window->getWindowSurface(instance->getInstance()), instance->getInstance(), true, false);
+    device = new VulkanDevice(dev, window->getWindowSurface(instance->getInstance()), instance->getInstance(), false, false);
 }

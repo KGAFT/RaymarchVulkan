@@ -10,6 +10,8 @@ RaymarchPipeline::RaymarchPipeline(VulkanDevice *device,
   if (device == nullptr || swapChain == nullptr) {
     throw std::runtime_error("Error swapchain or device is not initialized");
   }
+  input.resolution.x = startWidth;
+  input.resolution.y = startHeight;
 
   shader = ShaderLoader::loadShaders("glsl/Raymarch", device);
 
@@ -19,18 +21,20 @@ RaymarchPipeline::RaymarchPipeline(VulkanDevice *device,
 
   endConfig.vertexInputs.push_back(
       {1, 2, sizeof(float), VK_FORMAT_R32G32_SFLOAT});
-
+  endConfig.pushConstantInfos.push_back(
+      {VK_SHADER_STAGE_FRAGMENT_BIT, sizeof(HostInput)});
   endRenderPipeline = new VulkanEndRenderPipeline(
       device, new VulkanSyncManager(device, swapChain), shader, &endConfig,
       startWidth, startHeight, swapChain->getSwapChainImageViews(), 1,
       swapChain->getSwapChainImageFormat(), true, VK_CULL_MODE_NONE,
       VK_COMPARE_OP_LESS);
-
+  endRenderPipeline->getPushConstants()[0]->setData(&input);
   quadMesh = acquireQuadMesh(device);
 }
 
 void RaymarchPipeline::render() {
   VkCommandBuffer cmd = endRenderPipeline->beginRender();
+  endRenderPipeline->updatePushConstants();
   quadMesh.second->bind(cmd);
   quadMesh.first->bind(cmd);
   quadMesh.first->draw(cmd);
@@ -39,6 +43,8 @@ void RaymarchPipeline::render() {
 }
 
 void RaymarchPipeline::resized(int width, int height) {
+  input.resolution.x = width;
+  input.resolution.y = height;
   vkDeviceWaitIdle(device->getDevice());
   endRenderPipeline->resized(width, height);
 }

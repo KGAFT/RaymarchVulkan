@@ -1,3 +1,6 @@
 [submodule "modules/VulkanContext"]
 	path = modules/VulkanContext
 	url = https://github.com/KGAFT/VulkanContext
+[submodule "modules/glm"]
+	path = modules/glm
+	url = https://github.com/g-truc/glm

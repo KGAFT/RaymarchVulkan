@@ -11,6 +11,12 @@
 #include <Vulkan/VulkanBuffers/IndexBuffer.h>
 #include <Vulkan/VulkanBuffers/VertexBuffer.h>
 
+#include <glm/glm.hpp>
+
+struct HostInput{
+    glm::vec2 resolution;
+};
+
 class RaymarchPipeline : public IWindowResizeCallback{
 public:
     RaymarchPipeline(VulkanDevice* device, VulkanSwapChain* swapChain, int startWidth, int startHeight);
@@ -20,6 +26,7 @@ private:
     VulkanDevice* device;
     VulkanSwapChain* swapChain;
     VulkanShader* shader;
+    HostInput input;
     std::pair<IndexBuffer*, VertexBuffer*> quadMesh;
 public:
     void render();

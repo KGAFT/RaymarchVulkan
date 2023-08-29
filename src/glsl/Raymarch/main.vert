@@ -21,6 +21,6 @@ vec4 fixVectorPositioning(vec4 base){
 }
 
 void main() {
-    ReadyUvs = uvs;
+    ReadyUvs = position.xy;
     gl_Position = vec4(fixVectorPositioning(position), 1.0);
 }
